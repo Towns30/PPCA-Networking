@@ -1,5 +1,7 @@
 # QUIC Congestion Control
 
+[中文版](quic-cc.zh.md)
+
 > Elective project (5') — Networking track
 
 ## Motivation

@@ -1,5 +1,7 @@
 # PPCA 2025 — Networking Track
 
+[中文版](README.zh.md)
+
 ## Introduction
 
 Understand the core building blocks of computer networks, learn the protocols that make the internet work, and build tools you'll actually use in daily life.
@@ -87,7 +89,7 @@ Requirements:
 
 ---
 
-### 5. Network Diagnostic Toolkit (NEW)
+### 5. Network Diagnostic Toolkit
 
 Build a progressive set of network diagnostic tools:
 
@@ -103,7 +105,7 @@ Each sub-project is scored independently — you can complete just one or two.
 
 ---
 
-### 6. QUIC Congestion Control (NEW, 5')
+### 6. QUIC Congestion Control (5')
 
 Implement your own QUIC congestion-control algorithm (CUBIC / BBR / delay-based / custom) on the `apernet/quic-go` framework.
 
@@ -116,7 +118,7 @@ See [quic-cc.md](quic-cc.md). Starter code in [`quic-cc-lab/`](quic-cc-lab/).
 
 ---
 
-### 7. Mini Caddy (NEW)
+### 7. Mini Caddy
 
 Build a [Caddy](https://caddyserver.com/)-style web server from the TCP socket up.
 
@@ -141,7 +143,6 @@ Have another network-related project in mind? Propose it to a TA. We'll evaluate
 
 - **Required (SOCKS5):** 5 points
 - **Elective projects:** Points stack independently
-- **Recommended minimum:** 10+ points from electives
 - Code quality, commit hygiene, and real-world usability are considered during code review
 
 ## References

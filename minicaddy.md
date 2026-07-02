@@ -1,5 +1,7 @@
 # Mini Caddy — Build a Web Server from the Socket Up
 
+[中文版](minicaddy.zh.md)
+
 > Elective project (6' core + up to 12' bonus) — Networking track
 
 ## Motivation

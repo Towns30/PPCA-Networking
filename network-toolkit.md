@@ -1,5 +1,7 @@
 # Network Diagnostic Toolkit
 
+[中文版](network-toolkit.zh.md)
+
 > Elective project — Networking track
 
 ## Overview
