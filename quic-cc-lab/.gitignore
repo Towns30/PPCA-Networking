@@ -1,0 +1,3 @@
+bin/
+testbed/results/
+*.log
