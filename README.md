@@ -133,7 +133,27 @@ Build a [Caddy](https://caddyserver.com/)-style web server from the TCP socket u
 
 ---
 
-### 8. Open Topic
+### 8. Modify Existing Proxy Software
+
+Contribute a meaningful feature to an existing open-source proxy tool such as [sing-box](https://github.com/SagerNet/sing-box), [Xray-core](https://github.com/XTLS/Xray-core), or similar.
+
+Example directions (pick one or propose your own):
+- Design and implement a **custom proxy protocol**
+- Write new **routing rules** (geo-based, domain-list, process-name, etc.)
+- Implement advanced **DNS resolution strategies** (split DNS, conditional forwarding, etc.)
+- Add a new **transport layer**
+- Performance optimization, observability, or security hardening
+
+**Before starting:** you **must** discuss your proposal with a TA. We will scope the work together and assign a point value based on complexity (typically 4'–10'). Starting without TA approval means no credit.
+
+What to submit:
+- A fork with clean commits
+- A short write-up explaining what you changed, why, and how to test it
+- A demo showing the feature working end-to-end
+
+---
+
+### 9. Open Topic
 
 Have another network-related project in mind? Propose it to a TA. We'll evaluate the workload and assign an appropriate point value.
 
