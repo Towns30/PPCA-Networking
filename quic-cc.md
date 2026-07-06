@@ -79,16 +79,6 @@ the score scale; a score around 40 is not surprising for some algorithm you writ
 Use these numbers as context, not as a hard target. Your understanding of the
 algorithm, how you justify your algorithm, etc., is the major part of the grading.
 
-## Grading (5')
-
-| Component | Weight |
-|-----------|--------|
-| Correctness & build | 15% |
-| Algorithm depth (not just tuned AIMD) | 25% |
-| Automated scorecard (published scenarios) | 30% |
-| Held-out robustness (perturbed scenarios) | 15% |
-| Report & analysis | 15% |
-
 ## Deliverables
 
 1. Your `student.go`

@@ -53,6 +53,7 @@ Violation = automatic zero on the affected component.
 
 ### 4. Virtual Hosting / Routing
 - Route by `Host` header to the right site
+- If you want tls, probably you also need to look at sni
 
 ### 5. Configuration
 - Parse a Caddyfile-style config to drive all features
