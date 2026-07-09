@@ -84,13 +84,13 @@ func Connect(conn net.Conn) (net.Conn, error) {
 		}
 		host = net.IP(addr_buf).String()
 	case 0x03: // domianname, we need to read domainname length followed
-		len_buf := make([]byte, 1)
-		_, err = io.ReadFull(conn, len_buf)
+		domainlen_buf := make([]byte, 1)
+		_, err = io.ReadFull(conn, domainlen_buf)
 		if err != nil {
 			return nil, err
 		}
-		len := int(len_buf[0])
-		domain_buf := make([]byte, len)
+		domainlen := int(domainlen_buf[0])
+		domain_buf := make([]byte, domainlen)
 		_, err = io.ReadFull(conn, domain_buf)
 		if err != nil {
 			return nil, err
@@ -113,10 +113,12 @@ func Connect(conn net.Conn) (net.Conn, error) {
 	}
 	port := binary.BigEndian.Uint16(port_buf)
 	addr := net.JoinHostPort(host, strconv.Itoa(int(port)))
+	fmt.Println("connect target:", addr)
 
 	// proxy connect server
 	conn_server, err := net.DialTimeout("tcp", addr, 5*time.Second)
 	if err != nil {
+		conn.Write([]byte{0x05, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00})
 		return nil, err
 	}
 	// SOCKS5 reply format
@@ -162,6 +164,7 @@ func HandleClient(conn net.Conn) {
 
 func main() {
 	listener, err := net.Listen("tcp", ":1080") // 监听本电脑所有IP地址的1080端口
+	fmt.Println("SOCKS5 proxy listening on 127.0.0.1:1080")
 	if err != nil {
 		fmt.Println("error occurs", err)
 		return
@@ -169,6 +172,7 @@ func main() {
 	defer listener.Close()
 	for {
 		conn, err := listener.Accept()
+		fmt.Println("Wellcome new client: ", conn.RemoteAddr())
 		if err != nil {
 			fmt.Println("error occurs", err)
 			continue
