@@ -164,7 +164,7 @@ func HandleClient(conn net.Conn) {
 
 func main() {
 	listener, err := net.Listen("tcp", ":1080") // 监听本电脑所有IP地址的1080端口
-	fmt.Println("SOCKS5 proxy listening on 127.0.0.1:1080")
+	fmt.Println("SOCKS5 proxy listening on :1080")
 	if err != nil {
 		fmt.Println("error occurs", err)
 		return
