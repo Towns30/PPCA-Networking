@@ -31,7 +31,15 @@ func Methods(conn net.Conn) error {
 	if err != nil {
 		return err
 	}
-	if buf_methods[0] != byte(0x00) { // unsupport NO AUTH
+	hasNoAuth := false
+	for _, method := range buf_methods {
+		if method == byte(0x00) {
+			hasNoAuth = true
+			break
+		}
+	}
+	if !hasNoAuth { // unsupport NO AUTH
+		conn.Write([]byte{0x05, 0xff})
 		return fmt.Errorf("Sorry, we only support NO AUTH")
 	}
 	// SOCKS5 reply format
@@ -100,6 +108,9 @@ func Connect(conn net.Conn) (net.Conn, error) {
 	}
 	port_buf := make([]byte, 2)
 	_, err = io.ReadFull(conn, port_buf)
+	if err != nil {
+		return nil, err
+	}
 	port := binary.BigEndian.Uint16(port_buf)
 	addr := net.JoinHostPort(host, strconv.Itoa(int(port)))
 
