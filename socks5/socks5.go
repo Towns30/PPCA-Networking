@@ -172,11 +172,11 @@ func main() {
 	defer listener.Close()
 	for {
 		conn, err := listener.Accept()
-		fmt.Println("Wellcome new client: ", conn.RemoteAddr())
 		if err != nil {
 			fmt.Println("error occurs", err)
 			continue
 		}
+		fmt.Println("Wellcome new client: ", conn.RemoteAddr())
 		go HandleClient(conn) // 开一个goroutine连接此用户
 	}
 }
