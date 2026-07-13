@@ -163,7 +163,7 @@ func HandleClient(conn net.Conn) {
 }
 
 func main() {
-	listener, err := net.Listen("tcp", ":1080") // 监听本电脑所有IP地址的1080端口
+	listener, err := net.Listen("tcp", ":1080") // listening on all 1080 port
 	fmt.Println("SOCKS5 proxy listening on :1080")
 	if err != nil {
 		fmt.Println("error occurs", err)
@@ -177,6 +177,6 @@ func main() {
 			continue
 		}
 		fmt.Println("Wellcome new client: ", conn.RemoteAddr())
-		go HandleClient(conn) // 开一个goroutine连接此用户
+		go HandleClient(conn) // open a goroutine to connect this client
 	}
 }

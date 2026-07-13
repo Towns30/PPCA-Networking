@@ -1,5 +1,4 @@
 test.go
 socks5-UDP/.agents
 socks5-UDP/.codex
-socks5-UDP/cmd
 socks5-UDP/go.mod
