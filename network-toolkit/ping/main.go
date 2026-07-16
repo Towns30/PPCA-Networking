@@ -284,10 +284,10 @@ func ResolveHost(host string) (*net.IPAddr, error) {
 	return addr, nil
 }
 
-func PrintSummary(send_cnt uint16, timeout_cnt uint16, host string, rtt_statistics RTTStatistics) {
+func PrintSummary(send_cnt uint16, receive_echo_cnt uint16, host string, rtt_statistics RTTStatistics) {
 	fmt.Println()
 	fmt.Printf("--- %s ping statistics ---\n", host)
-	fmt.Printf("%d packets transmitted, %d packets received, %.1f%% packet loss\n", send_cnt, send_cnt-timeout_cnt, float64(timeout_cnt)/float64(send_cnt)*100)
+	fmt.Printf("%d packets transmitted, %d packets received, %.1f%% packet loss\n", send_cnt, receive_echo_cnt, float64(send_cnt-receive_echo_cnt)/float64(send_cnt)*100)
 	if rtt_statistics.count_ == 0 {
 		return
 	}
@@ -344,7 +344,8 @@ func main() {
 	states := make(map[uint16]Info)
 	rtt_statistics := RTTStatistics{}
 	timeout_seq := uint16(0)
-	timeout_cnt := 0
+	receive_echo_cnt := 0
+	// timeout_cnt := 0
 	seq := uint16(0)
 	// send first package
 	states[seq] = Info{seq_: seq, send_time_: time.Now()}
@@ -363,17 +364,17 @@ func main() {
 			if exists && !state.is_handled_ {
 				state.is_handled_ = true
 				states[timeout_seq] = state
-				timeout_cnt++
+				// timeout_cnt++
 			}
 			timeout_seq++
 		case <-ctx.Done():
-			PrintSummary(seq, uint16(timeout_cnt), config.host_, rtt_statistics)
+			PrintSummary(seq, uint16(receive_echo_cnt), config.host_, rtt_statistics)
 			return
 		case <-send_ticker.C:
 			send_time := time.Now()
 			if config.count_ != -1 && int(seq) >= config.count_ {
 				conn.Close()
-				PrintSummary(seq, uint16(timeout_cnt), config.host_, rtt_statistics)
+				PrintSummary(seq, uint16(receive_echo_cnt), config.host_, rtt_statistics)
 				return
 			}
 			states[seq] = Info{seq_: seq, send_time_: send_time, is_handled_: false}
@@ -384,7 +385,7 @@ func main() {
 			if exists && state.is_handled_ == false {
 				state.is_handled_ = true
 				states[timeout_seq] = state
-				timeout_cnt++
+				// timeout_cnt++
 			}
 			timeout_seq++
 		case reply := <-reply_ch:
@@ -400,8 +401,12 @@ func main() {
 				if rtt > config.timeout_ {
 					// fmt.Println("package received seq=", reply.seq_, "time=", rtt, " but sadly timeout")
 					continue
-				} else {
-					timeout_cnt--
+				} else if states[reply.seq_].receive_time_.IsZero() && reply.receive_type_ == 0 { // first time to receive and echo reply
+					// timeout_cnt--
+					info.receive_time_ = reply.receive_time_
+					states[reply.seq_] = info
+				} else { // receive more than twice
+					continue
 				}
 			}
 
@@ -411,12 +416,13 @@ func main() {
 				if rtt > config.timeout_ {
 					info.is_handled_ = true
 					states[reply.seq_] = info
-					timeout_cnt++
+					// timeout_cnt++
 					continue
 				}
 				rtt_statistics.Add(rtt)
 				rtt_milliseconds := float64(rtt) / float64(time.Millisecond)
 				fmt.Printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.2f ms\n", 8+config.size_, addr.IP.String(), reply.seq_, reply.ttl_, rtt_milliseconds)
+				receive_echo_cnt++
 				info.receive_time_ = reply.receive_time_
 				info.is_handled_ = true
 				states[reply.seq_] = info
